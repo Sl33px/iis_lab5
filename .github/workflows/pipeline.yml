@@ -1,4 +1,4 @@
-name: My GitHub Actions Pipeline
+name: Copy files from iis-lab2
 
 on:
   push:
@@ -7,14 +7,25 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  copy-files:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main repository
+      - name: Checkout current repo (iis_lab5)
         uses: actions/checkout@v2
 
       - name: Clone iis-lab2 repository
         run: git clone https://github.com/Sl33px/iis-lab2.git
 
-      - name: Build code
-        run: echo "Build step goes here"
+      - name: Copy files from iis-lab2 to iis_lab5
+        run: |
+          cp -r iis-lab2/* ./
+          cp -r iis-lab2/.* ./ || true  # на випадок .gitignore або .env
+          rm -rf ./iis-lab2             # прибрати клонований репо після копіювання
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Автоматичне копіювання з iis-lab2" || echo "No changes to commit"
+          git push
