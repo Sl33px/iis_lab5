@@ -10,7 +10,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout main repository
         uses: actions/checkout@v2
+
+      - name: Clone iis-lab2 repository
+        run: git clone https://github.com/Sl33px/iis-lab2.git
+
       - name: Build code
         run: echo "Build step goes here"
