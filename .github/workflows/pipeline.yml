@@ -2,15 +2,21 @@ name: My GitHub Actions Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]  # Зміни main на master, якщо твій репозиторій використовує master
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout current repository
         uses: actions/checkout@v2
+
+      - name: Clone external repository (iis-lab2)
+        run: |
+          git clone https://github.com/Sl33px/iis-lab2.git external-lab2
+          ls external-lab2  # Перевірка вмісту
+      
       - name: Build code
-        run: echo "Build step goes here"
+        run: echo "Building project..."
